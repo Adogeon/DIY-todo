@@ -4,7 +4,14 @@ const typeDefs = [
   `
   type Query {
     hello: String
+    allTodos: [todo]
   }
+
+  type todo {
+    id: Number
+    text: string
+  }
+
   `,
 ];
 
