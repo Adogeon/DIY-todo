@@ -1,15 +1,15 @@
 import { model, Schema, Document} from 'mongoose';
 
-export interface iTodo extends Document {
-  text: String
+export interface iTodos extends Document {
+  list: String[]
 }
 
 //Schema
-const TodoSchema = new Schema<iTodo> ({
+const TodoSchema = new Schema<iTodos> ({
   text: {
-    type: String,
+    type: [String],
     require: true
   }
 })
 
-export default model('Todo', TodoSchema)
+export const Todo = model('Todo', TodoSchema)
