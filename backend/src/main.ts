@@ -1,17 +1,18 @@
-const express = require("express");
-const { graphqlHTTP } = require("express-graphql");
+import express, {Express, Request, Response} from "express"
+import {graphqlHTTP} from "express-graphql";
 
-const db = require("./modules/db.js");
+import {connectDb} from "./modules/db";
+
 const { schema } = require("./modules/graphql.js");
 
-const app = express();
+const app : Express = express();
 const port = 3000;
 
-app.get("/", (req, res) => {
+app.get("/", (_, res : Response) => {
   res.send("Hello World!");
 });
 
-db.init();
+connectDb();
 
 app.use(
   "/graphql",
