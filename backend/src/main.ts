@@ -1,27 +1,39 @@
-import express, {Express, Request, Response} from "express"
-import {graphqlHTTP} from "express-graphql";
+import express = require("express");
+import "reflect-metadata";
+import {buildSchema} from "type-graphql";
+import {connect} from "mongoose"
+import {graphqlHTTP} from 'express-graphql'
 
-import {connectDb} from "./modules/db";
+//resolvers
 
-const { schema } = require("./modules/graphql.js");
+import {TodosResolver} from "./resolvers/todos"
+import {UserResolver} from "./resolvers/user"
 
-const app : Express = express();
-const port = 3000;
+const main = async () => {
+  const schema = await buildSchema({
+    resolvers: [TodosResolver, UserResolver],
+    emitSchemaFile: true,
+    validate: false,
+  });
 
-app.get("/", (_, res : Response) => {
-  res.send("Hello World!");
-});
+  const mongoose = await connect('mongodeb://localhost:27017/test', {useNewUrlParser: true, useUnifiedTopology: true});
+  await mongoose.connection;
 
-connectDb();
-
-app.use(
-  "/graphql",
-  graphqlHTTP({
+  const app = express();
+  app.use('/graphql', graphqlHTTP({
     schema: schema,
-    graphiql: true,
+    graphiql: true
+  }))
+  
+  app.listen({port: 3333}, () => {
+    console.log(`Server ready and listening at ==> http://localhost:3333/graphql`)
+  });
+  main().catch((error) => {
+    console.log(error, 'error');
   })
-);
+}
 
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
-});
+main().catch((error) => {
+  console.log(error, "error");
+})
+
