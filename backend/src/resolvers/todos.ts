@@ -1,4 +1,4 @@
-import {Resolver, Mutation, Arg, Query} from "type-graphql";
+import {Resolver, Mutation, Arg, Query, FieldResolver, Root} from "type-graphql";
 import {Todos, TodosModel} from "../entities/Todos";
 import {TodosInput} from "./types/todo-input";
 
@@ -12,9 +12,10 @@ export class TodosResolver {
 
   @Mutation(() => Todos)
   async createTodos(@Arg("data"){items}: TodosInput): Promise<Todos> {
-    const todos = (await TodosModel.create({
+    const todos = await (await TodosModel.create({
       items
     })).save()
+    console.log(todos.schema)
     return todos;
   };
 
@@ -23,4 +24,5 @@ export class TodosResolver {
     await TodosModel.deleteOne({id});
     return true
   }
+
 }

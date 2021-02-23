@@ -6,14 +6,15 @@ import {Todos} from "./Todos";
 @ObjectType({description: "The User model"})
 export class User {
   @Field(() => ID)
-  id!: number;
+  id!: string;
 
   @Field()
-  username!: String;
+  @Property({unique: true})
+  username!: string;
 
   @Field(_type => [Todos], {nullable: true})
   @Property({ref: Todos})
-  todo_id?: Ref<Todos>[];
+  todos?: Ref<Todos>[];
 }
 
 export const UserModel = getModelForClass(User);

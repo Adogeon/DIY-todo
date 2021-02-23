@@ -3,6 +3,6 @@ import {Todos} from "../../entities/Todos";
 
 @InputType()
 export class TodosInput implements Partial<Todos> {
-  @Field()
+  @Field(type => [String])
   items!: string[];
 }

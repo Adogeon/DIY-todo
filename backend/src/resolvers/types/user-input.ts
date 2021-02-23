@@ -5,11 +5,9 @@ import {ObjectId} from "mongodb";
 
 @InputType()
 export class UserInput implements Partial<User> {
-  @Field()
-  @Length(1, 255)
-  username!: String;
+  @Field(type => String)
+  username!: string;
 
-  @Field({ nullable: true })
-  todo_id: ObjectId[] = [];
-  
+  @Field(type => [String], { nullable: true })
+  todos?: string[];
 }

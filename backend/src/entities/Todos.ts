@@ -1,6 +1,5 @@
 import {ObjectType, Field, ID} from "type-graphql";
 import {prop as Property, getModelForClass} from "@typegoose/typegoose";
-import {Ref} from "../types";
 
 @ObjectType({ description: "The Todos model"})
 export class Todos {
@@ -8,6 +7,7 @@ export class Todos {
   id!: string;
 
   @Field(type => [String])
+  @Property({required: true, default:[]})
   items!: string[];
 }
 
