@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "compile": "tsc && node dist\\main.js"
+    "compile": "tsc ",
+    "serve": "node dist\\main.js",
+    "watch": "nodemon dist\\main.js"
   },
   "author": "",
   "license": "ISC",

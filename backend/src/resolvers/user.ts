@@ -33,7 +33,6 @@ export class UserResolver {
   @FieldResolver(type => [Todos])
   async todos(@Root() user: any): Promise<Ref<Todos>[]> {
     const userDoc = await UserModel.findById(user.id).populate("todos")
-    console.log("doc", userDoc);
     return userDoc.todos;
   }
 }
