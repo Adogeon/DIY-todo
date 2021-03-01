@@ -6,7 +6,7 @@ import {graphqlHTTP} from 'express-graphql'
 
 //resolvers
 
-import {TodosResolver} from "./resolvers/todos"
+import {TodosResolver} from "./resolvers/list"
 import {UserResolver} from "./resolvers/user"
 
 const main = async () => {

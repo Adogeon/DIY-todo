@@ -8,6 +8,7 @@ type Mutation {
   createUser(data: UserInput!): User!
   deleteTodos(id: String!): Boolean!
   deleteUser(id: String!): Boolean!
+  updateTodos(data: TodosInput!): Todos!
 }
 
 type Query {
@@ -22,6 +23,7 @@ type Todos {
 }
 
 input TodosInput {
+  id: ID
   items: [String!]!
 }
 

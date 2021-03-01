@@ -1,6 +1,6 @@
 import {Resolver, Mutation, Arg, Query, FieldResolver, Root} from "type-graphql";
 import {User, UserModel} from "../entities/User";
-import {Todos} from "../entities/Todos";
+import {List} from "../entities/List";
 import {UserInput} from "./types/user-input";
 import {Ref } from "../types"
 import mongoose = require("mongoose")
@@ -30,8 +30,8 @@ export class UserResolver {
     return true
   }
 
-  @FieldResolver(type => [Todos])
-  async todos(@Root() user: any): Promise<Ref<Todos>[]> {
+  @FieldResolver(type => [List])
+  async todos(@Root() user: any): Promise<Ref<List>[]> {
     const userDoc = await UserModel.findById(user.id).populate("todos")
     return userDoc.todos;
   }
