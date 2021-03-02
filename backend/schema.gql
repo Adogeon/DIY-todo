@@ -3,34 +3,49 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
+"""the todo item model"""
+type Item {
+  id: ID!
+  isDone: Boolean!
+  priority: String!
+  tags: [String!]!
+  text: String!
+}
+
+input ItemInput {
+  isDone: Boolean
+  priority: String
+  tags: [String!]
+  text: String
+}
+
+"""The Todos List model"""
+type List {
+  id: ID!
+  items: [Item!]
+}
+
 type Mutation {
-  createTodos(data: TodosInput!): Todos!
+  createItem(item: ItemInput!): Item!
+  createNewList(items: [String!]!): List!
   createUser(data: UserInput!): User!
-  deleteTodos(id: String!): Boolean!
-  deleteUser(id: String!): Boolean!
-  updateTodos(data: TodosInput!): Todos!
+  deleteItem(id: ID!): Boolean!
+  deleteList(id: ID!): Boolean!
+  deleteUser(id: ID!): Boolean!
+  updateItem(id: ID!, item: ItemInput!): Item!
+  updateList(id: ID!, items: [String!]!): List!
 }
 
 type Query {
-  returnSingleTodos(id: String!): Todos!
+  returnSingleItem(id: ID!): Item!
+  returnSingleList(id: String!): List!
   returnUser(id: String!): User!
-}
-
-"""The Todos model"""
-type Todos {
-  id: ID!
-  items: [String!]!
-}
-
-input TodosInput {
-  id: ID
-  items: [String!]!
 }
 
 """The User model"""
 type User {
   id: ID!
-  todos: [Todos!]
+  todos: [List!]
   username: String!
 }
 

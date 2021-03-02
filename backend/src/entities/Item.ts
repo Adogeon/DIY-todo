@@ -17,6 +17,10 @@ export class Item {
   @Field(type => [String])
   @Property({default: []})
   tags: string[]
+
+  @Field(type => String)
+  @Property()
+  priority: string
 }
 
 export const ItemModel = getModelForClass(Item);

@@ -11,4 +11,7 @@ export class ItemInput implements Partial<Item> {
 
   @Field(type => [String], {nullable: true})
   tags?: string[]
+
+  @Field(type => String, {nullable: true})
+  priority?: string
 }

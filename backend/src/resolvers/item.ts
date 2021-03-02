@@ -1,29 +1,28 @@
-import { mongoose } from "@typegoose/typegoose";
-import {Resolver, Mutation, Arg, Query, FieldResolver, Root} from "type-graphql";
+import {Resolver, Mutation, Arg, Query, ID} from "type-graphql";
 import { Item, ItemModel } from "../entities/Item";
 import {ItemInput} from "./types/item-input";
-import {Ref} from "../types";
 
 @Resolver(of => Item)
 export class ItemResolver {
   @Query(_returns => Item, {nullable: false})
-  async returnSingleItem(@Arg("id") id: String) {
+  async returnSingleItem(@Arg("id", type => ID) id: string) {
     return await ItemModel.findById(id)
   }
 
   @Mutation(() => Item)
-  async createItem(@Arg("item") {text, isDone, tags}: ItemInput) {
+  async createItem(@Arg("item") {text, isDone, tags, priority}: ItemInput) {
     const item = await (await ItemModel.create({
       text,
       isDone,
-      tags
+      tags,
+      priority
     })).save();
     return item;
   }
 
   @Mutation(() => Item)
   async updateItem(
-    @Arg("id") id: string,
+    @Arg("id", type => ID) id: string,
     @Arg("item") itemInput: ItemInput
   ) {
     const doc = await ItemModel.findById(id);
@@ -35,7 +34,7 @@ export class ItemResolver {
   }
 
   @Mutation(() => Boolean)
-  async deleteList(@Arg("id") id: string) {
+  async deleteItem(@Arg("id", type => ID) id: string) {
     try {
       await ItemModel.deleteOne({id});
       return true

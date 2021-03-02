@@ -1,4 +1,4 @@
-import {Resolver, Mutation, Arg, Query, FieldResolver, Root} from "type-graphql";
+import {Resolver, Mutation, Arg, Query, FieldResolver, Root, ID} from "type-graphql";
 import {User, UserModel} from "../entities/User";
 import {List} from "../entities/List";
 import {UserInput} from "./types/user-input";
@@ -14,9 +14,7 @@ export class UserResolver {
 
   @Mutation(() => User)
   async createUser(@Arg("data"){username, todos}: UserInput): Promise<User> {
-
     const todoList = todos.map(todo => mongoose.Types.ObjectId(todo))
-
     const user = await(await UserModel.create({
       username,
       todos: todoList
@@ -25,7 +23,7 @@ export class UserResolver {
   };
 
   @Mutation(() => Boolean)
-  async deleteUser(@Arg("id") id: string) {
+  async deleteUser(@Arg("id", type => ID) id: string) {
     await UserModel.deleteOne({id});
     return true
   }
