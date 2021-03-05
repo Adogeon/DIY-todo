@@ -9,12 +9,13 @@ export class User {
   id!: string;
 
   @Field()
-  @Property({unique: true})
+  @Property()
   username!: string;
 
   @Field( type => [List], {nullable: true})
   @Property({ref: List})
   todos?: Ref<List>[];
+
 }
 
 export const UserModel = getModelForClass(User);

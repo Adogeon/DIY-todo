@@ -22,18 +22,20 @@ input ItemInput {
 """The Todos List model"""
 type List {
   id: ID!
-  items: [Item!]
+  items: [Item!]!
+  title: String
 }
 
 type Mutation {
   createItem(item: ItemInput!): Item!
-  createNewList(items: [String!]!): List!
+  createNewList(items: [String!]!, title: String!): List!
   createUser(data: UserInput!): User!
   deleteItem(id: ID!): Boolean!
   deleteList(id: ID!): Boolean!
   deleteUser(id: ID!): Boolean!
   updateItem(id: ID!, item: ItemInput!): Item!
-  updateList(id: ID!, items: [String!]!): List!
+  updateList(id: ID!, items: [String!]!, title: String!): List!
+  updateUser(data: UserInput!, id: ID!): User!
 }
 
 type Query {
@@ -51,5 +53,5 @@ type User {
 
 input UserInput {
   todos: [String!]
-  username: String!
+  username: String
 }

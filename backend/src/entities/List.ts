@@ -8,9 +8,13 @@ export class List {
   @Field(() => ID)
   id!: string;
 
-  @Field(_type => [Item], {nullable: true})
+  @Field(() => String, {nullable: true})
+  @Property()
+  title?: string;
+
+  @Field(_type => [Item], {nullable: false})
   @Property({ref: Item})
-  items?: Ref<Item>[];
+  items!: Ref<Item>[];
 }
 
 export const ListModel = getModelForClass(List);

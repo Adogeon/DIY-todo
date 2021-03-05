@@ -14,21 +14,24 @@ export class ListResolver {
 
   @Mutation(returns => List)
   async createNewList(
-    @Arg("items", type => [String]) items: string[]
+    @Arg("items", type => [String]) items: string[],
+    @Arg("title", type => String) title: string
   ): Promise<List> {
     const itemList = items.map(item => mongoose.Types.ObjectId(item));
-    const list = await(await ListModel.create({items: itemList})).save()
+    const list = await(await ListModel.create({items: itemList, title})).save()
     return list;
   }
 
   @Mutation(() => List)
   async updateList(
     @Arg("id", type=>ID) id: string,
+    @Arg("title", type => String) title: string,
     @Arg("items", type => [String]) items: string[] 
   ): Promise<List> {
     const doc = await ListModel.findById(id);
-    const itemList = items.map(item => mongoose.Types.ObjectId(item));
+    const itemList = items?.map(item => mongoose.Types.ObjectId(item)) ?? doc.items;
     doc.items = itemList;
+    doc.title = title ? title : doc.title
     const list = await doc.save();
     return list
   }

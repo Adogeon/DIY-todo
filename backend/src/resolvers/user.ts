@@ -14,13 +14,26 @@ export class UserResolver {
 
   @Mutation(() => User)
   async createUser(@Arg("data"){username, todos}: UserInput): Promise<User> {
-    const todoList = todos.map(todo => mongoose.Types.ObjectId(todo))
+    const todoList = todos?.map(todo => mongoose.Types.ObjectId(todo)) ?? []
     const user = await(await UserModel.create({
       username,
       todos: todoList
     })).save()
     return user;
   };
+
+  @Mutation(() => User)
+  async updateUser(
+    @Arg("id", type => ID) id: String, 
+    @Arg("data")data: UserInput
+  ): Promise<User> {
+    const doc = await UserModel.findById(id);
+    Object.keys(data).map(key => {
+      if(data[key] !== null) doc[key] = data[key];
+    });
+    const user = await doc.save();
+    return user;
+  }
 
   @Mutation(() => Boolean)
   async deleteUser(@Arg("id", type => ID) id: string) {
