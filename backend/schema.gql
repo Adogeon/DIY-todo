@@ -28,7 +28,7 @@ type List {
 
 type Mutation {
   createItem(item: ItemInput!): Item!
-  createNewList(items: [String!]!, title: String!): List!
+  createList(items: [String!]!, title: String!): List!
   createUser(data: UserInput!): User!
   deleteItem(id: ID!): Boolean!
   deleteList(id: ID!): Boolean!

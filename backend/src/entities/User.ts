@@ -9,7 +9,7 @@ export class User {
   id!: string;
 
   @Field()
-  @Property()
+  @Property({unique:false})
   username!: string;
 
   @Field( type => [List], {nullable: true})

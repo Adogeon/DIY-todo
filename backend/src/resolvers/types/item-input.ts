@@ -14,4 +14,7 @@ export class ItemInput implements Partial<Item> {
 
   @Field(type => String, {nullable: true})
   priority?: string
+
+  @Field(type => String, {nullable: true})
+  dueDate?: string
 }

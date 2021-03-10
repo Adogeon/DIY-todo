@@ -13,7 +13,7 @@ export class ListResolver {
   }
 
   @Mutation(returns => List)
-  async createNewList(
+  async createList(
     @Arg("items", type => [String]) items: string[],
     @Arg("title", type => String) title: string
   ): Promise<List> {

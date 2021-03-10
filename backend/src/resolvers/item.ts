@@ -10,12 +10,13 @@ export class ItemResolver {
   }
 
   @Mutation(() => Item)
-  async createItem(@Arg("item") {text, isDone, tags, priority}: ItemInput) {
+  async createItem(@Arg("item") {text, isDone, tags, priority, dueDate}: ItemInput) {
     const item = await (await ItemModel.create({
       text,
       isDone,
       tags,
-      priority
+      priority,
+      dueDate
     })).save();
     return item;
   }
