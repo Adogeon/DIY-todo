@@ -1,7 +1,7 @@
-import {ObjectType, Field, ID} from "type-graphql";
+import {ObjectType, Field, ID, Int} from "type-graphql";
 import {prop as Property, getModelForClass} from "@typegoose/typegoose";
-import dayjs from 'dayjs';
-
+import {List} from "./List"
+import {Ref} from "../types"
 @ObjectType({description: "the todo item model"})
 export class Item {
   @Field(type => ID)
@@ -24,8 +24,12 @@ export class Item {
   priority: string
 
   @Field(type => String)
-  @Property({default: dayjs().toISOString()})
+  @Property()
   dueDate: string
+
+  @Field(type => List, {nullable: false})
+  @Property({ref: List})
+  belongTo: Ref<List>
 }
 
 export const ItemModel = getModelForClass(Item);

@@ -1,4 +1,4 @@
-import {InputType, Field, ID} from "type-graphql";
+import {InputType, Field, ID, Int} from "type-graphql";
 import {Item} from "../../entities/Item";
 
 @InputType()
@@ -17,4 +17,7 @@ export class ItemInput implements Partial<Item> {
 
   @Field(type => String, {nullable: true})
   dueDate?: string
+
+  @Field(type => String, {nullable: true})
+  belongTo?: string
 }

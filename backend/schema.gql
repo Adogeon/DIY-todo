@@ -5,6 +5,7 @@
 
 """the todo item model"""
 type Item {
+  dueDate: String!
   id: ID!
   isDone: Boolean!
   priority: String!
@@ -13,6 +14,7 @@ type Item {
 }
 
 input ItemInput {
+  dueDate: String
   isDone: Boolean
   priority: String
   tags: [String!]
