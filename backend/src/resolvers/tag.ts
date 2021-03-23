@@ -16,6 +16,9 @@ export class TagResolver {
     @Arg("userId", type => ID)userId: string
   ) {
     const tag = await(await TagModel.create({text, createdBy:userId})).save();
+    const userDoc = await UserModel.findById(userId);
+    userDoc.haveTags.push(tag.id);
+    await userDoc.save();
     return tag;
   }
 

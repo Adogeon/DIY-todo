@@ -38,8 +38,8 @@ type List {
 }
 
 type Mutation {
-  createItem(item: ItemInput!): Item!
-  createList(items: [String!]!, title: String!): List!
+  createItem(item: ItemInput!, listId: ID!): Item!
+  createList(title: String!, userId: ID!): List!
   createTag(text: String!, userId: ID!): Tag!
   createUser(username: String!): User!
   deleteItem(id: ID!): Boolean!

@@ -14,11 +14,11 @@ export class User {
   username!: string;
 
   @Field( type => [List], {nullable: true})
-  @Property({ref: ()=>List})
+  @Property({ref: ()=>List, default:[]})
   todos?: Ref<List>[];
 
   @Field( type => [Tag], {nullable: true})
-  @Property({ref:'Tag'})
+  @Property({ref:'Tag', default:[]})
   haveTags?: Ref<Tag>[];
 }
 

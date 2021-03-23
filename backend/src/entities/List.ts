@@ -13,7 +13,7 @@ export class List {
   title?: string;
 
   @Field(type => [Item], {nullable: true})
-  @Property({ref: 'Item'})
+  @Property({ref: 'Item', default: []})
   items?: Ref<Item>[];
 }
 

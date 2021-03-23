@@ -1,5 +1,6 @@
 import {Resolver, Mutation, Arg, Query, ID} from "type-graphql";
 import { Item, ItemModel } from "../entities/Item";
+import { List, ListModel} from "../entities/List";
 import {ItemInput, ItemFilter} from "./types/item-input";
 
 @Resolver(of => Item)
@@ -16,7 +17,10 @@ export class ItemResolver {
   }
 
   @Mutation(() => Item)
-  async createItem(@Arg("item") {text, isDone, tags, priority, dueDate, belongTo}: ItemInput) {
+  async createItem(
+    @Arg("item") {text, isDone, tags, priority, dueDate, belongTo}: ItemInput,
+    @Arg("listId", type => ID) listId: string
+  ) {
     const item = await (await ItemModel.create({
       text,
       isDone,
@@ -25,6 +29,9 @@ export class ItemResolver {
       dueDate,
       belongTo
     })).save();
+    const listDocument = await ListModel.findById(listId);
+    listDocument.items.push(item);
+    await listDocument.save();
     return item;
   }
 

@@ -1,6 +1,7 @@
-import {Resolver, Mutation, Arg, Query, FieldResolver, Root, ID} from "type-graphql";
+import {Resolver, Mutation, Arg, Query, FieldResolver, Root, ID, Field} from "type-graphql";
 import {User, UserModel} from "../entities/User";
 import {List, ListModel} from "../entities/List";
+import {Tag} from "../entities/Tag";
 import {UserInput} from "./types/user-input";
 import {Ref } from "../types"
 
@@ -43,5 +44,11 @@ export class UserResolver {
   async todos(@Root() user: any): Promise<Ref<List>[]> {
     const userDoc = await UserModel.findById(user.id).populate("todos")
     return userDoc.todos;
+  }
+
+  @FieldResolver(type => [Tag])
+  async haveTags(@Root() user: any): Promise<Ref<Tag>[]> {
+    const userDoc = await UserModel.findById(user.id).populate("haveTags")
+    return userDoc.haveTags;
   }
 }

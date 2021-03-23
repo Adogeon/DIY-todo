@@ -2,8 +2,8 @@ import { mongoose } from "@typegoose/typegoose";
 import {Resolver, Mutation, Arg, Query, FieldResolver, Root, ID} from "type-graphql";
 import { Item } from "../entities/Item";
 import {List, ListModel} from "../entities/List";
+import { UserModel} from "../entities/User";
 import {Ref} from "../types";
-
 
 @Resolver(of => List)
 export class ListResolver {
@@ -14,11 +14,13 @@ export class ListResolver {
 
   @Mutation(returns => List)
   async createList(
-    @Arg("items", type => [String]) items: string[],
-    @Arg("title", type => String) title: string
+    @Arg("title", type => String) title: string,
+    @Arg("userId", type => ID) userId: string
   ): Promise<List> {
-    const itemList = items.map(item => mongoose.Types.ObjectId(item));
-    const list = await(await ListModel.create({items: itemList, title})).save()
+    const list = await(await ListModel.create({title})).save();
+    const userDoc = await UserModel.findById(userId);
+    userDoc.todos.push(list.id);
+    await userDoc.save(); 
     return list;
   }
 
