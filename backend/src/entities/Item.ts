@@ -17,11 +17,11 @@ export class Item {
   isDone!: boolean
 
   @Field(type => [Tag])
-  @Property({default: []})
-  tags!: string[]
+  @Property({required: true, default: [], ref: () => Tag})
+  tags!: Ref<Tag>[]
 
   @Field(type => String)
-  @Property()
+  @Property({default: "none"})
   priority: string
 
   @Field(type => String)
@@ -33,7 +33,5 @@ export class Item {
   belongTo!: Ref<List>
 
 }
-
-console.log(Item)
 
 export const ItemModel = getModelForClass(Item);

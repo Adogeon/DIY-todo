@@ -14,13 +14,20 @@ type Item {
   text: String!
 }
 
+input ItemFilter {
+  belongTo: String!
+  isDone: Boolean
+  tags: [String!]
+  text: String
+}
+
 input ItemInput {
-  belongTo: String
+  belongTo: String!
   dueDate: String
   isDone: Boolean
   priority: String
   tags: [String!]
-  text: String
+  text: String!
 }
 
 """The Todos List model"""
@@ -33,23 +40,29 @@ type List {
 type Mutation {
   createItem(item: ItemInput!): Item!
   createList(items: [String!]!, title: String!): List!
+  createTag(text: String!, userId: ID!): Tag!
   createUser(username: String!): User!
   deleteItem(id: ID!): Boolean!
   deleteList(id: ID!): Boolean!
+  deleteTag(id: ID!): Boolean!
   deleteUser(id: ID!): Boolean!
   updateItem(id: ID!, item: ItemInput!): Item!
   updateList(id: ID!, items: [String!]!, title: String!): List!
+  updateTag(id: ID!, text: String!): Tag!
   updateUser(data: UserInput!, id: ID!): User!
 }
 
 type Query {
+  returnMultipleItem(filter: ItemFilter!): [Item!]!
   returnSingleItem(id: ID!): Item!
   returnSingleList(id: String!): List!
+  returnTagForUser(userId: ID!): [Tag!]!
   returnUser(id: String!): User!
 }
 
 """the tag model"""
 type Tag {
+  belongTo: User!
   createdBy: User!
   id: ID!
   text: String!

@@ -1,12 +1,18 @@
 import {Resolver, Mutation, Arg, Query, ID} from "type-graphql";
 import { Item, ItemModel } from "../entities/Item";
-import {ItemInput} from "./types/item-input";
+import {ItemInput, ItemFilter} from "./types/item-input";
 
 @Resolver(of => Item)
 export class ItemResolver {
   @Query(_returns => Item, {nullable: false})
   async returnSingleItem(@Arg("id", type => ID) id: string) {
     return await ItemModel.findById(id)
+  }
+
+  @Query(_returns => [Item], {nullable:false})
+  async returnMultipleItem(@Arg("filter") filter: ItemFilter) {
+    const items = await ItemModel.find(filter)
+    return items
   }
 
   @Mutation(() => Item)

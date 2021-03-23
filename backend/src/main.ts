@@ -9,10 +9,11 @@ import {graphqlHTTP} from 'express-graphql'
 import {ListResolver} from "./resolvers/list"
 import {UserResolver} from "./resolvers/user"
 import {ItemResolver} from "./resolvers/item"
+import {TagResolver} from "./resolvers/tag"
 
 const main = async () => {
   const schema = await buildSchema({
-    resolvers: [ListResolver, UserResolver, ItemResolver],
+    resolvers: [ListResolver, UserResolver, ItemResolver, TagResolver],
     emitSchemaFile: true,
     validate: false,
   });
