@@ -5,15 +5,17 @@
 
 """the todo item model"""
 type Item {
+  belongTo: List!
   dueDate: String!
   id: ID!
   isDone: Boolean!
   priority: String!
-  tags: [String!]!
+  tags: [Tag!]!
   text: String!
 }
 
 input ItemInput {
+  belongTo: String
   dueDate: String
   isDone: Boolean
   priority: String
@@ -24,14 +26,14 @@ input ItemInput {
 """The Todos List model"""
 type List {
   id: ID!
-  items: [Item!]!
+  items: [Item!]
   title: String
 }
 
 type Mutation {
   createItem(item: ItemInput!): Item!
   createList(items: [String!]!, title: String!): List!
-  createUser(data: UserInput!): User!
+  createUser(username: String!): User!
   deleteItem(id: ID!): Boolean!
   deleteList(id: ID!): Boolean!
   deleteUser(id: ID!): Boolean!
@@ -46,8 +48,16 @@ type Query {
   returnUser(id: String!): User!
 }
 
+"""the tag model"""
+type Tag {
+  createdBy: User!
+  id: ID!
+  text: String!
+}
+
 """The User model"""
 type User {
+  haveTags: [Tag!]
   id: ID!
   todos: [List!]
   username: String!

@@ -1,9 +1,8 @@
 import {Resolver, Mutation, Arg, Query, FieldResolver, Root, ID} from "type-graphql";
 import {User, UserModel} from "../entities/User";
-import {List} from "../entities/List";
+import {List, ListModel} from "../entities/List";
 import {UserInput} from "./types/user-input";
 import {Ref } from "../types"
-import mongoose = require("mongoose")
 
 @Resolver(of=>User)
 export class UserResolver {
@@ -13,12 +12,11 @@ export class UserResolver {
   }
 
   @Mutation(() => User)
-  async createUser(@Arg("data"){username, todos}: UserInput): Promise<User> {
-    const todoList = todos?.map(todo => mongoose.Types.ObjectId(todo)) ?? []
-    const user = await(await UserModel.create({
-      username,
-      todos: todoList
-    })).save()
+  async createUser(@Arg("username", type => String)username: string): Promise<User> {
+    const user = await UserModel.create({ username})
+    const inboxList = await ListModel.create({title:"Inbox", items:[]})
+    user.todos = [inboxList.id];
+    await user.save();
     return user;
   };
 

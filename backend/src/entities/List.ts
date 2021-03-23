@@ -1,5 +1,5 @@
 import {ObjectType, Field, ID} from "type-graphql";
-import {prop as Property, getModelForClass} from "@typegoose/typegoose";
+import {prop as Property, getModelForClass, getName} from "@typegoose/typegoose";
 import {Ref} from "../types"
 import {Item} from "./Item"
 
@@ -12,9 +12,9 @@ export class List {
   @Property()
   title?: string;
 
-  @Field(_type => [Item], {nullable: false})
-  @Property({ref: Item})
-  items!: Ref<Item>[];
+  @Field(type => [Item], {nullable: true})
+  @Property({ref: 'Item'})
+  items?: Ref<Item>[];
 }
 
 export const ListModel = getModelForClass(List);
