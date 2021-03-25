@@ -2,6 +2,7 @@ import {ObjectType, Field, ID} from "type-graphql";
 import {prop as Property, getModelForClass, getName} from "@typegoose/typegoose";
 import {List} from "./List"
 import {Tag} from "./Tag"
+import {User} from "./User"
 import {Ref} from "../types"
 @ObjectType({description: "the todo item model"})
 export class Item {
@@ -28,9 +29,13 @@ export class Item {
   @Property()
   dueDate: string
 
+  @Field(type => User, {nullable: false})
+  @Property({ref: () => User})
+  belongTo!: Ref<User>
+
   @Field(type => List, {nullable: false})
   @Property({ref: () => List})
-  belongTo!: Ref<List>
+  project!: Ref<List>
 
 }
 

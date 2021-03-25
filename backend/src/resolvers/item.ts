@@ -1,8 +1,9 @@
-import {Resolver, Mutation, Arg, Query, ID} from "type-graphql";
+import {Resolver, Mutation, Arg, Query, ID, FieldResolver, Root} from "type-graphql";
 import { Item, ItemModel } from "../entities/Item";
 import { List, ListModel} from "../entities/List";
-import {ItemInput, ItemFilter} from "./types/item-input";
-
+import { User} from "../entities/User";
+import { ItemInput, ItemFilter} from "./types/item-input";
+import {Ref} from "../types";
 @Resolver(of => Item)
 export class ItemResolver {
   @Query(_returns => Item, {nullable: false})
@@ -18,8 +19,7 @@ export class ItemResolver {
 
   @Mutation(() => Item)
   async createItem(
-    @Arg("item") {text, isDone, tags, priority, dueDate, belongTo}: ItemInput,
-    @Arg("listId", type => ID) listId: string
+    @Arg("item") {text, isDone, tags, priority, dueDate, belongTo, project}: ItemInput,
   ) {
     const item = await (await ItemModel.create({
       text,
@@ -27,11 +27,10 @@ export class ItemResolver {
       tags,
       priority,
       dueDate,
-      belongTo
+      belongTo,
+      project
     })).save();
-    const listDocument = await ListModel.findById(listId);
-    listDocument.items.push(item);
-    await listDocument.save();
+    
     return item;
   }
 
@@ -57,6 +56,18 @@ export class ItemResolver {
       console.error(error)
       return false
     }
+  }
+
+  @FieldResolver(type => List)
+  async project(@Root() item: any): Promise<Ref<List>> {
+    const itemDoc = await ItemModel.findById(item.id).populate("project")
+    return itemDoc.project;
+  }
+
+  @FieldResolver(type => User)
+  async belongTo(@Root() item: any): Promise<Ref<User>> {
+    const itemDoc = await ItemModel.findById(item.id).populate("belongTo")
+    return itemDoc.belongTo;
   }
 
 }

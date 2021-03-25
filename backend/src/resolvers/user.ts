@@ -15,7 +15,7 @@ export class UserResolver {
   @Mutation(() => User)
   async createUser(@Arg("username", type => String)username: string): Promise<User> {
     const user = await UserModel.create({ username})
-    const inboxList = await ListModel.create({title:"Inbox", items:[]})
+    const inboxList = await ListModel.create({title:"Inbox"})
     user.todos = [inboxList.id];
     await user.save();
     return user;

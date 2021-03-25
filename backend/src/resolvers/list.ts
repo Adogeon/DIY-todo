@@ -1,9 +1,6 @@
-import { mongoose } from "@typegoose/typegoose";
 import {Resolver, Mutation, Arg, Query, FieldResolver, Root, ID} from "type-graphql";
-import { Item } from "../entities/Item";
 import {List, ListModel} from "../entities/List";
 import { UserModel} from "../entities/User";
-import {Ref} from "../types";
 
 @Resolver(of => List)
 export class ListResolver {
@@ -28,12 +25,9 @@ export class ListResolver {
   async updateList(
     @Arg("id", type=>ID) id: string,
     @Arg("title", type => String) title: string,
-    @Arg("items", type => [String]) items: string[] 
   ): Promise<List> {
     const doc = await ListModel.findById(id);
-    const itemList = items?.map(item => mongoose.Types.ObjectId(item)) ?? doc.items;
-    doc.items = itemList;
-    doc.title = title ? title : doc.title
+    doc.title = title;
     const list = await doc.save();
     return list
   }
@@ -47,11 +41,5 @@ export class ListResolver {
       console.error(error)
       return false
     }
-  }
-
-  @FieldResolver(type => [Item])
-  async items(@Root() list: any): Promise<Ref<Item>[]> {
-    const listDoc = await ListModel.findById(list.id).populate("items")
-    return listDoc.items;
   }
 }

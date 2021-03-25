@@ -20,6 +20,9 @@ export class ItemInput implements Partial<Item> {
 
   @Field(type => String, {nullable: false})
   belongTo!: string
+
+  @Field(type => String, {nullable: false})
+  project!: string
 }
 
 @InputType()
@@ -35,4 +38,7 @@ export class ItemFilter implements Partial<Item> {
 
   @Field(type => String, {nullable: false})
   belongTo!: string
+
+  @Field(type => String, {nullable: true})
+  project?: string
 }

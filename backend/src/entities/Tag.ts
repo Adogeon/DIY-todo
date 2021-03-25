@@ -13,7 +13,7 @@ export class Tag {
   text!: string
 
   @Field(type => User)
-  @Property({ref: () => User})
+  @Property({ref: 'User'})
   createdBy!: Ref<User>
 }
 
