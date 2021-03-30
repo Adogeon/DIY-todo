@@ -6,7 +6,7 @@
 """the todo item model"""
 type Item {
   belongTo: User!
-  dueDate: String!
+  dueDate: Timestamp!
   id: ID!
   isDone: Boolean!
   priority: String!
@@ -16,19 +16,20 @@ type Item {
 }
 
 input ItemFilter {
-  belongTo: String!
+  belongTo: ID!
   isDone: Boolean
-  project: String
-  tags: [String!]
+  project: ID
+  tags: [ID!]
   text: String
+  today: Boolean
 }
 
 input ItemInput {
-  belongTo: String!
-  dueDate: String
+  belongTo: ID!
+  dueDate: Timestamp
   isDone: Boolean
   priority: String
-  project: String!
+  project: ID!
   tags: [String!]
   text: String!
 }
@@ -64,11 +65,15 @@ type Query {
 
 """the tag model"""
 type Tag {
-  belongTo: User!
   createdBy: User!
   id: ID!
   text: String!
 }
+
+"""
+The javascript `Date` as integer. Type represents date and time as number of milliseconds from start of UNIX epoch.
+"""
+scalar Timestamp
 
 """The User model"""
 type User {

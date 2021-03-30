@@ -1,6 +1,6 @@
 import {Resolver, Mutation, Arg, Query, ID, FieldResolver, Root} from "type-graphql";
 import { Item, ItemModel } from "../entities/Item";
-import { List, ListModel} from "../entities/List";
+import { List} from "../entities/List";
 import { User} from "../entities/User";
 import { ItemInput, ItemFilter} from "./types/item-input";
 import {Ref} from "../types";
@@ -13,6 +13,15 @@ export class ItemResolver {
 
   @Query(_returns => [Item], {nullable:false})
   async returnMultipleItem(@Arg("filter") filter: ItemFilter) {
+    if(filter.today === true) {
+      const {today, ...rest} = filter;
+      const dNow = new Date();
+      dNow.setHours(0);
+      dNow.setMinutes(0);
+      dNow.setSeconds(0);
+      dNow.setMilliseconds(0);
+      filter = {dueDate: dNow, ...rest }
+    }
     const items = await ItemModel.find(filter)
     return items
   }

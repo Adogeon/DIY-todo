@@ -44,7 +44,7 @@ export class TagResolver {
   }
 
   @FieldResolver(type => User)
-  async belongTo(@Root() tag: Tag): Promise<Ref<User>> {
+  async createdBy(@Root() tag: Tag): Promise<Ref<User>> {
     return await UserModel.findById(tag.createdBy)
   } 
 }

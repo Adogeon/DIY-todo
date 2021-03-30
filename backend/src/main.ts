@@ -14,6 +14,7 @@ import {TagResolver} from "./resolvers/tag"
 const main = async () => {
   const schema = await buildSchema({
     resolvers: [ListResolver, UserResolver, ItemResolver, TagResolver],
+    dateScalarMode:"timestamp",
     emitSchemaFile: true,
     validate: false,
   });

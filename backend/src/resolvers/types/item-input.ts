@@ -1,4 +1,4 @@
-import {InputType, Field, ID, Int} from "type-graphql";
+import {InputType, Field, ID} from "type-graphql";
 import {Item} from "../../entities/Item";
 
 @InputType()
@@ -15,13 +15,13 @@ export class ItemInput implements Partial<Item> {
   @Field(type => String, {nullable: true})
   priority?: string
 
-  @Field(type => String, {nullable: true})
-  dueDate?: string
+  @Field({nullable: true})
+  dueDate?: Date
 
-  @Field(type => String, {nullable: false})
+  @Field(type => ID, {nullable: false})
   belongTo!: string
 
-  @Field(type => String, {nullable: false})
+  @Field(type => ID, {nullable: false})
   project!: string
 }
 
@@ -33,12 +33,17 @@ export class ItemFilter implements Partial<Item> {
   @Field(type => Boolean, {nullable: true})
   isDone?: boolean
 
-  @Field(type => [String], {nullable: true})
+  @Field(type => [ID], {nullable: true})
   tags?: string[]
 
-  @Field(type => String, {nullable: false})
+  @Field(type => ID, {nullable: false})
   belongTo!: string
 
-  @Field(type => String, {nullable: true})
+  @Field(type => ID, {nullable: true})
   project?: string
+
+  @Field(type => Boolean, {nullable: true})
+  today?: boolean
+
+  dueDate: Date
 }
