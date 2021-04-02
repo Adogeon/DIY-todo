@@ -21,8 +21,8 @@ export class ItemInput implements Partial<Item> {
   @Field(type => ID, {nullable: false})
   belongTo!: string
 
-  @Field(type => ID, {nullable: false})
-  project!: string
+  @Field(type => ID, {nullable: true})
+  project?: string
 }
 
 @InputType()

@@ -17,9 +17,9 @@ export class Item {
   @Property({default: false})
   isDone!: boolean
 
-  @Field(type => [Tag])
-  @Property({required: true, default: [], ref: () => Tag})
-  tags!: Ref<Tag>[]
+  @Field(type => [Tag], {nullable: true})
+  @Property({required: false, default: [], ref: () => Tag})
+  tags?: Ref<Tag>[]
 
   @Field(type => String)
   @Property({default: "none"})
@@ -33,9 +33,9 @@ export class Item {
   @Property({ref: () => User})
   belongTo!: Ref<User>
 
-  @Field(type => List, {nullable: false})
+  @Field(type => List, {nullable: true})
   @Property({ref: () => List})
-  project!: Ref<List>
+  project?: Ref<List>
 
 }
 

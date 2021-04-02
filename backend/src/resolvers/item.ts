@@ -4,6 +4,7 @@ import { List} from "../entities/List";
 import { User} from "../entities/User";
 import { ItemInput, ItemFilter} from "./types/item-input";
 import {Ref} from "../types";
+import { Tag } from "../entities/Tag";
 @Resolver(of => Item)
 export class ItemResolver {
   @Query(_returns => Item, {nullable: false})
@@ -65,6 +66,12 @@ export class ItemResolver {
       console.error(error)
       return false
     }
+  }
+
+  @FieldResolver(type => Tag)
+  async tags(@Root() item: any): Promise<Ref<Tag>[]> {
+    const itemDoc = await ItemModel.findById(item.id).populate("tags")
+    return itemDoc.tags;
   }
 
   @FieldResolver(type => List)
