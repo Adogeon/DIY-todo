@@ -23,6 +23,12 @@ export class ItemResolver {
       dNow.setMilliseconds(0);
       filter = {dueDate: dNow, ...rest }
     }
+
+    if(filter.project === "") {
+      const {project, ...rest} = filter;
+      filter = {project: null, ...rest};
+    }
+
     const items = await ItemModel.find(filter)
     return items
   }

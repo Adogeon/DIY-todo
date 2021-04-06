@@ -10,8 +10,8 @@ type Item {
   id: ID!
   isDone: Boolean!
   priority: String!
-  project: List!
-  tags: [Tag!]!
+  project: List
+  tags: [Tag!]
   text: String!
 }
 
@@ -29,7 +29,7 @@ input ItemInput {
   dueDate: Timestamp
   isDone: Boolean
   priority: String
-  project: ID!
+  project: ID
   tags: [String!]
   text: String!
 }

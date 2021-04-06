@@ -12,9 +12,10 @@ export class ListResolver {
   @Mutation(returns => List)
   async createList(
     @Arg("title", type => String) title: string,
-    @Arg("userId", type => ID) userId: string
+    @Arg("userId", type => ID) userId: string,
+    @Arg("colorCode", type => String) colorCode: string
   ): Promise<List> {
-    const list = await(await ListModel.create({title})).save();
+    const list = await(await ListModel.create({title, colorCode})).save();
     const userDoc = await UserModel.findById(userId);
     userDoc.todos.push(list.id);
     await userDoc.save(); 

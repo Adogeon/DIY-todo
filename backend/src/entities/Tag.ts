@@ -15,6 +15,10 @@ export class Tag {
   @Field(type => User)
   @Property({ref: 'User'})
   createdBy!: Ref<User>
+
+  @Field(type => String)
+  @Property()
+  colorCode!: string
 }
 
 export const TagModel = getModelForClass(Tag)

@@ -13,9 +13,10 @@ export class TagResolver {
   @Mutation(() => Tag)
   async createTag(
     @Arg("text", type => String)text: string,
-    @Arg("userId", type => ID)userId: string
+    @Arg("userId", type => ID)userId: string,
+    @Arg("colorCode", type => String)colorCode: string,
   ) {
-    const tag = await(await TagModel.create({text, createdBy:userId})).save();
+    const tag = await(await TagModel.create({text, createdBy:userId, colorCode})).save();
     const userDoc = await UserModel.findById(userId);
     userDoc.haveTags.push(tag.id);
     await userDoc.save();

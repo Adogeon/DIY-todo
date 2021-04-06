@@ -9,6 +9,9 @@ export class List {
   @Field(() => String, {nullable: true})
   @Property()
   title?: string;
+
+  @Field(() => String)
+  colorCode: string;
 }
 
 export const ListModel = getModelForClass(List);
