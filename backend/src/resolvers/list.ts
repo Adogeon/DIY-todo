@@ -26,9 +26,11 @@ export class ListResolver {
   async updateList(
     @Arg("id", type=>ID) id: string,
     @Arg("title", type => String) title: string,
+    @Arg("colorCode", type => String) colorCode: string
   ): Promise<List> {
     const doc = await ListModel.findById(id);
     doc.title = title;
+    doc.colorCode = colorCode;
     const list = await doc.save();
     return list
   }

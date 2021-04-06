@@ -26,10 +26,12 @@ export class TagResolver {
   @Mutation(() => Tag)
   async updateTag(
     @Arg("text", type => String)text: string,
-    @Arg("id", type => ID)id: string
+    @Arg("id", type => ID)id: string,
+    @Arg("colorCode", type => String)colorCode: string
   ) {
     const tag = await TagModel.findById(id);
     tag.text = text;
+    tag.colorCode = colorCode;
     return tag.save();
   }
 
