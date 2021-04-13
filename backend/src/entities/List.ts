@@ -6,12 +6,13 @@ export class List {
   @Field(() => ID)
   id!: string;
 
-  @Field(() => String, {nullable: true})
+  @Field(() => String)
   @Property()
   title?: string;
 
   @Field(() => String)
-  colorCode: string;
+  @Property()
+  colorCode?: string;
 }
 
 export const ListModel = getModelForClass(List);

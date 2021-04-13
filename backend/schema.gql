@@ -36,22 +36,23 @@ input ItemInput {
 
 """The Todos List model"""
 type List {
+  colorCode: String!
   id: ID!
-  title: String
+  title: String!
 }
 
 type Mutation {
   createItem(item: ItemInput!): Item!
-  createList(title: String!, userId: ID!): List!
-  createTag(text: String!, userId: ID!): Tag!
+  createList(colorCode: String!, title: String!, userId: ID!): List!
+  createTag(colorCode: String!, text: String!, userId: ID!): Tag!
   createUser(username: String!): User!
   deleteItem(id: ID!): Boolean!
   deleteList(id: ID!): Boolean!
   deleteTag(id: ID!): Boolean!
   deleteUser(id: ID!): Boolean!
   updateItem(id: ID!, item: ItemInput!): Item!
-  updateList(id: ID!, title: String!): List!
-  updateTag(id: ID!, text: String!): Tag!
+  updateList(colorCode: String!, id: ID!, title: String!): List!
+  updateTag(colorCode: String!, id: ID!, text: String!): Tag!
   updateUser(data: UserInput!, id: ID!): User!
 }
 
@@ -65,6 +66,7 @@ type Query {
 
 """the tag model"""
 type Tag {
+  colorCode: String!
   createdBy: User!
   id: ID!
   text: String!

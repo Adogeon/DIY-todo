@@ -66,7 +66,7 @@ export class ItemResolver {
   @Mutation(() => Boolean)
   async deleteItem(@Arg("id", type => ID) id: string) {
     try {
-      await ItemModel.deleteOne({id});
+      const result = await ItemModel.deleteOne({_id: id});
       return true
     } catch(error) {
       console.error(error)
@@ -92,4 +92,8 @@ export class ItemResolver {
     return itemDoc.belongTo;
   }
 
+  @FieldResolver(type => Date)
+  dueDate(@Root() item: any): Date {
+    return new Date(item.dueDate);
+  }
 }
