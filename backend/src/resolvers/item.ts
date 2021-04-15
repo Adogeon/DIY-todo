@@ -2,7 +2,7 @@ import {Resolver, Mutation, Arg, Query, ID, FieldResolver, Root} from "type-grap
 import { Item, ItemModel } from "../entities/Item";
 import { List} from "../entities/List";
 import { User} from "../entities/User";
-import { ItemInput, ItemFilter} from "./types/item-input";
+import { ItemInput, ItemUpdateInput, ItemFilter} from "./types/item-input";
 import {Ref} from "../types";
 import { Tag } from "../entities/Tag";
 @Resolver(of => Item)
@@ -53,7 +53,7 @@ export class ItemResolver {
   @Mutation(() => Item)
   async updateItem(
     @Arg("id", type => ID) id: string,
-    @Arg("item") itemInput: ItemInput
+    @Arg("item") itemInput: ItemUpdateInput
   ) {
     const doc = await ItemModel.findById(id);
     Object.keys(itemInput).map(key => {

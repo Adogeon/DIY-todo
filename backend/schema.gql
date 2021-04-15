@@ -17,6 +17,7 @@ type Item {
 
 input ItemFilter {
   belongTo: ID!
+  dueDate: Timestamp
   isDone: Boolean
   project: ID
   tags: [ID!]
@@ -32,6 +33,16 @@ input ItemInput {
   project: ID
   tags: [String!]
   text: String!
+}
+
+input ItemUpdateInput {
+  belongTo: ID
+  dueDate: Timestamp
+  isDone: Boolean
+  priority: String
+  project: ID
+  tags: [String!]
+  text: String
 }
 
 """The Todos List model"""
@@ -50,7 +61,7 @@ type Mutation {
   deleteList(id: ID!): Boolean!
   deleteTag(id: ID!): Boolean!
   deleteUser(id: ID!): Boolean!
-  updateItem(id: ID!, item: ItemInput!): Item!
+  updateItem(id: ID!, item: ItemUpdateInput!): Item!
   updateList(colorCode: String!, id: ID!, title: String!): List!
   updateTag(colorCode: String!, id: ID!, text: String!): Tag!
   updateUser(data: UserInput!, id: ID!): User!
