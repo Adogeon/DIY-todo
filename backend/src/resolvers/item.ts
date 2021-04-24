@@ -94,6 +94,6 @@ export class ItemResolver {
 
   @FieldResolver(type => Date)
   dueDate(@Root() item: any): Date {
-    return new Date(item.dueDate);
+    return item.dueDate ? new Date(item.dueDate) : null;
   }
 }

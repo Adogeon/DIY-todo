@@ -25,9 +25,9 @@ export class Item {
   @Property({default: "none"})
   priority: string
 
-  @Field()
+  @Field({nullable: true})
   @Property()
-  dueDate: Date
+  dueDate?: Date
 
   @Field(type => User, {nullable: false})
   @Property({ref: () => User})
