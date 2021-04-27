@@ -21,6 +21,7 @@ const main = async () => {
 
   const mongoose = await connect('mongodb://localhost:27017/test', {useNewUrlParser: true, useUnifiedTopology: true});
   await mongoose.connection;
+  //mongoose.set('debug', true);
 
   const app = express();
   app.use('/graphql', graphqlHTTP({

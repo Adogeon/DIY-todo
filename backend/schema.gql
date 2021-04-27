@@ -6,7 +6,7 @@
 """the todo item model"""
 type Item {
   belongTo: User!
-  dueDate: Timestamp!
+  dueDate: Timestamp
   id: ID!
   isDone: Boolean!
   priority: String!
@@ -22,7 +22,6 @@ input ItemFilter {
   project: ID
   tags: [ID!]
   text: String
-  today: Boolean
 }
 
 input ItemInput {
@@ -68,7 +67,7 @@ type Mutation {
 }
 
 type Query {
-  returnMultipleItem(filter: ItemFilter!): [Item!]!
+  returnMultipleItem(after: Timestamp, before: Timestamp, filter: ItemFilter!): [Item!]!
   returnSingleItem(id: ID!): Item!
   returnSingleList(id: String!): List!
   returnTagForUser(userId: ID!): [Tag!]!

@@ -42,13 +42,9 @@ export class ItemFilter implements Partial<Item> {
   @Field(type => ID, {nullable: true})
   project?: string
 
-  @Field(type => Boolean, {nullable: true})
-  today?: boolean
-
-  @Field({nullable: true})
-  dueDate: Date
+  @Field(type => Date, {nullable: true})
+  dueDate?: Date
 }
-
 @InputType()
 export class ItemUpdateInput implements Partial<Item> {
    @Field(type => String, {nullable: true})

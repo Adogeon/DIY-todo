@@ -13,23 +13,25 @@ export class ItemResolver {
   }
 
   @Query(_returns => [Item], {nullable:false})
-  async returnMultipleItem(@Arg("filter") filter: ItemFilter) {
-    if(filter.today === true) {
-      const {today, ...rest} = filter;
-      const dNow = new Date();
-      dNow.setHours(0);
-      dNow.setMinutes(0);
-      dNow.setSeconds(0);
-      dNow.setMilliseconds(0);
-      filter = {dueDate: dNow, ...rest }
+  async returnMultipleItem(
+    @Arg("filter") filter: ItemFilter,
+    @Arg("after", {nullable: true}) after?: Date,
+    @Arg("before", {nullable: true}) before? : Date
+  ) {
+    let dbFilter : any;
+    dbFilter = {...filter};
+    console.log(dbFilter);
+    console.log('after',after);
+    console.log('before',before);
+    if(after) {
+      dbFilter.dueDate = {};
+      dbFilter.dueDate.$gte = after
     }
-
-    if(filter.project === "") {
-      const {project, ...rest} = filter;
-      filter = {project: null, ...rest};
+    if(before) {
+      dbFilter.dueDate.$lte = before
     }
-
-    const items = await ItemModel.find(filter)
+    console.log(dbFilter);
+    const items = await ItemModel.find(dbFilter)
     return items
   }
 
@@ -42,11 +44,10 @@ export class ItemResolver {
       isDone,
       tags,
       priority,
-      dueDate,
+      dueDate: dueDate ?? null,
       belongTo,
-      project
+      project: project ?? null
     })).save();
-    
     return item;
   }
 
@@ -57,7 +58,7 @@ export class ItemResolver {
   ) {
     const doc = await ItemModel.findById(id);
     Object.keys(itemInput).map(key => {
-      if(itemInput[key] !== null) doc[key] = itemInput[key];
+      if(itemInput[key] !== undefined) doc[key] = itemInput[key];
     });
     const item = await doc.save();
     return item;
