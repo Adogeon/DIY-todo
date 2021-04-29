@@ -13,6 +13,10 @@ export class User {
   @Property({unique:false})
   username!: string;
 
+  @Field()
+  @Property()
+  password!: string;
+
   @Field( type => [List], {nullable: true})
   @Property({ref: ()=>List, default:[]})
   todos?: Ref<List>[];

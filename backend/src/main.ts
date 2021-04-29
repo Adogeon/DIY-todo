@@ -34,6 +34,11 @@ const main = async () => {
   app.use('/graphql', graphqlHTTP({
     schema: schema,
     graphiql: true,
+    customFormatErrorFn: error => ({
+      message: error.message,
+      locations: error.locations,
+      path: error.path,
+    })
   }))
   
   app.listen({port: 3000}, () => {
