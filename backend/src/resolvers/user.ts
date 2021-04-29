@@ -1,6 +1,6 @@
-import {Resolver, Mutation, Arg, Query, FieldResolver, Root, ID, Field} from "type-graphql";
+import {Resolver, Mutation, Arg, Query, FieldResolver, Root, ID} from "type-graphql";
 import {User, UserModel} from "../entities/User";
-import {List, ListModel} from "../entities/List";
+import {List} from "../entities/List";
 import {Tag} from "../entities/Tag";
 import {UserInput} from "./types/user-input";
 import {Ref } from "../types"

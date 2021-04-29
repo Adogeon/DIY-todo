@@ -1,19 +1,23 @@
-import express = require("express");
-import "reflect-metadata";
-import {buildSchema} from "type-graphql";
+import express = require("express")
+import "reflect-metadata"
+import {buildSchema} from "type-graphql"
 import {connect} from "mongoose"
 import {graphqlHTTP} from 'express-graphql'
 
-//resolvers
+import * as jwt from "express-jwt"
+import { authChecker} from "./auth/authChecker";
 
+//resolvers
 import {ListResolver} from "./resolvers/list"
 import {UserResolver} from "./resolvers/user"
 import {ItemResolver} from "./resolvers/item"
 import {TagResolver} from "./resolvers/tag"
 
+
 const main = async () => {
   const schema = await buildSchema({
     resolvers: [ListResolver, UserResolver, ItemResolver, TagResolver],
+    authChecker: authChecker,
     dateScalarMode:"timestamp",
     emitSchemaFile: true,
     validate: false,
@@ -24,9 +28,12 @@ const main = async () => {
   //mongoose.set('debug', true);
 
   const app = express();
+
+  app.use('/graphql', jwt({secret: "TypeGraphqQL"}))
+
   app.use('/graphql', graphqlHTTP({
     schema: schema,
-    graphiql: true
+    graphiql: true,
   }))
   
   app.listen({port: 3000}, () => {
