@@ -21,7 +21,6 @@ type Item {
 }
 
 input ItemFilter {
-  belongTo: ID!
   dueDate: Timestamp
   isDone: Boolean
   project: ID
@@ -40,7 +39,6 @@ input ItemInput {
 }
 
 input ItemUpdateInput {
-  belongTo: ID
   dueDate: Timestamp
   isDone: Boolean
   priority: String
@@ -58,17 +56,17 @@ type List {
 
 type Mutation {
   createItem(item: ItemInput!): Item!
-  createList(colorCode: String!, title: String!, userId: ID!): List!
-  createTag(colorCode: String!, text: String!, userId: ID!): Tag!
+  createList(colorCode: String!, title: String!): List!
+  createTag(colorCode: String!, text: String!): Tag!
   deleteItem(id: ID!): Boolean!
   deleteList(id: ID!): Boolean!
   deleteTag(id: ID!): Boolean!
-  deleteUser(id: ID!): Boolean!
+  deleteUser: Boolean!
   refreshLogin(token: String!): AuthResult!
   updateItem(id: ID!, item: ItemUpdateInput!): Item!
   updateList(colorCode: String!, id: ID!, title: String!): List!
   updateTag(colorCode: String!, id: ID!, text: String!): Tag!
-  updateUser(data: UserInput!, id: ID!): User!
+  updateUser(data: UserInput!): User!
   userSignIn(password: String!, username: String!): AuthResult
   userSignUp(password: String!, username: String!): AuthResult
 }
@@ -78,7 +76,7 @@ type Query {
   returnSingleItem(id: ID!): Item!
   returnSingleList(id: String!): List!
   returnTagForUser(userId: ID!): [Tag!]!
-  returnUser(id: String!): User!
+  returnUser: User!
 }
 
 """the tag model"""

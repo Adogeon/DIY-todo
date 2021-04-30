@@ -36,9 +36,6 @@ export class ItemFilter implements Partial<Item> {
   @Field(type => [ID], {nullable: true})
   tags?: string[]
 
-  @Field(type => ID, {nullable: false})
-  belongTo!: string
-
   @Field(type => ID, {nullable: true})
   project?: string
 
@@ -61,9 +58,6 @@ export class ItemUpdateInput implements Partial<Item> {
 
   @Field({nullable: true})
   dueDate?: Date
-
-  @Field(type => ID, {nullable: true})
-  belongTo?: string
 
   @Field(type => ID, {nullable: true})
   project?: string

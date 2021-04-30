@@ -1,4 +1,4 @@
-import {Resolver, Mutation, Arg, Query, ID, FieldResolver, Root, Ctx} from "type-graphql";
+import {Resolver, Mutation, Arg, Query, ID, FieldResolver, Root, Ctx, Authorized} from "type-graphql";
 import { Item, ItemModel } from "../entities/Item";
 import { List} from "../entities/List";
 import { User} from "../entities/User";
@@ -16,6 +16,7 @@ export class ItemResolver {
     return await ItemModel.findById(id)
   }
 
+  @Authorized()
   @Query(_returns => [Item], {nullable:false})
   async returnMultipleItem(
     @Arg("filter") filter: ItemFilter,
@@ -24,7 +25,7 @@ export class ItemResolver {
     @Ctx() ctx?: any
   ) {
     let dbFilter : any;
-    dbFilter = {...filter};
+    dbFilter = {belongTo: ctx.user.userId, ...filter};
     if(after) {
       dbFilter.dueDate = {};
       dbFilter.dueDate.$gte = after
@@ -38,7 +39,8 @@ export class ItemResolver {
 
   @Mutation(() => Item)
   async createItem(
-    @Arg("item") {text, isDone, tags, priority, dueDate, belongTo, project}: ItemInput,
+    @Arg("item") {text, isDone, tags, priority, dueDate, project}: ItemInput,
+    @Ctx() ctx? : any
   ) {
     const item = await (await ItemModel.create({
       text,
@@ -46,12 +48,13 @@ export class ItemResolver {
       tags,
       priority,
       dueDate: dueDate ?? null,
-      belongTo,
+      belongTo: ctx.user.userId,
       project: project ?? null
     })).save();
     return item;
   }
 
+  @Authorized()
   @Mutation(() => Item)
   async updateItem(
     @Arg("id", type => ID) id: string,
@@ -64,7 +67,8 @@ export class ItemResolver {
     const item = await doc.save();
     return item;
   }
-
+  
+  @Authorized()
   @Mutation(() => Boolean)
   async deleteItem(@Arg("id", type => ID) id: string) {
     try {

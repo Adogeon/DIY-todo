@@ -1,23 +1,31 @@
-import {Resolver, Mutation, Arg, Query, FieldResolver, Root, ID} from "type-graphql";
+import {Resolver, Mutation, Arg, Query, FieldResolver, Root, ID, Ctx, Authorized} from "type-graphql";
 import {User, UserModel} from "../entities/User";
 import {List} from "../entities/List";
 import {Tag} from "../entities/Tag";
 import {UserInput} from "./types/user-input";
 import {Ref } from "../types"
+import { GraphQLError } from "graphql";
 
 @Resolver(of=>User)
 export class UserResolver {
+  @Authorized()
   @Query(_returns => User, {nullable: false})
-  async returnUser(@Arg("id") id: String) {
-    return await UserModel.findById({_id: id});
+  async returnUser(
+    @Ctx() ctx?: any
+  ) {
+    if(ctx.user.error) {
+      throw new Error("Token expired")
+    }
+    return await UserModel.findById({_id: ctx.user.userId});
   }
 
+  @Authorized()
   @Mutation(() => User)
   async updateUser(
-    @Arg("id", type => ID) id: String, 
-    @Arg("data")data: UserInput
+    @Arg("data")data: UserInput,
+    @Ctx() ctx?: any
   ): Promise<User> {
-    const doc = await UserModel.findById(id);
+    const doc = await UserModel.findById(ctx.user.userId);
     Object.keys(data).map(key => {
       if(data[key] !== null) doc[key] = data[key];
     });
@@ -25,9 +33,12 @@ export class UserResolver {
     return user;
   }
 
+  @Authorized()
   @Mutation(() => Boolean)
-  async deleteUser(@Arg("id", type => ID) id: string) {
-    await UserModel.deleteOne({id});
+  async deleteUser(
+    @Ctx() ctx?: any
+  ) {
+    await UserModel.deleteOne({_id: ctx.user.userId});
     return true
   }
 

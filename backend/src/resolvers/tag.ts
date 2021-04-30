@@ -1,4 +1,4 @@
-import {Resolver, Mutation, Arg, Query, ID, FieldResolver, Root} from "type-graphql";
+import {Resolver, Mutation, Arg, Query, ID, FieldResolver, Root, Ctx, Authorized} from "type-graphql";
 import { Tag, TagModel } from "../entities/Tag";
 import { User, UserModel} from "../entities/User";
 import { Ref} from "../types";
@@ -10,19 +10,21 @@ export class TagResolver {
     return await TagModel.find({createdBy: userId})
   }
 
+  @Authorized()
   @Mutation(() => Tag)
   async createTag(
     @Arg("text", type => String)text: string,
-    @Arg("userId", type => ID)userId: string,
     @Arg("colorCode", type => String)colorCode: string,
+    @Ctx() ctx?: any
   ) {
-    const tag = await(await TagModel.create({text, createdBy:userId, colorCode})).save();
-    const userDoc = await UserModel.findById(userId);
+    const tag = await(await TagModel.create({text, createdBy:ctx.user.userId, colorCode})).save();
+    const userDoc = await UserModel.findById(ctx.user.userId);
     userDoc.haveTags.push(tag.id);
     await userDoc.save();
     return tag;
   }
 
+  @Authorized()
   @Mutation(() => Tag)
   async updateTag(
     @Arg("text", type => String)text: string,
@@ -35,6 +37,7 @@ export class TagResolver {
     return tag.save();
   }
 
+  @Authorized()
   @Mutation(() => Boolean)
   async deleteTag(@Arg("id", type => ID) id: string) {
     try {

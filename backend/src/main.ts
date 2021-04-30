@@ -44,6 +44,13 @@ const main = async () => {
       }
   }))
 
+  app.use(function (err, req, res, next) {
+    if(err.inner.name === 'TokenExpiredError') {
+      req.user = {error: err.inner.name}
+    } 
+    return next()
+  });
+
   app.use('/graphql', graphqlHTTP({
     schema: schema,
     graphiql: true,
