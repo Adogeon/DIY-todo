@@ -13,12 +13,6 @@ export class UserResolver {
   }
 
   @Mutation(() => User)
-  async createUser(@Arg("username", type => String)username: string): Promise<User> {
-    const user = await UserModel.create({ username})
-    return user;
-  };
-
-  @Mutation(() => User)
   async updateUser(
     @Arg("id", type => ID) id: String, 
     @Arg("data")data: UserInput

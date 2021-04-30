@@ -7,7 +7,7 @@ import bcrypt from 'bcrypt';
 const generateToken = (id: string) => {
   return jsonwebtoken.sign({
     userId: id
-  }, 'TypegraphQL', {expiresIn: '30m'})
+  }, 'TypeGraphQL', {expiresIn: '30m'})
 }
 
 const generateRefreshToken = (id: string) => {
@@ -17,7 +17,7 @@ const generateRefreshToken = (id: string) => {
 }
 @Resolver(of => AuthResult) 
 export class AuthResolver {
-  @Query(_returns => AuthResult, {nullable: true})
+  @Mutation(_returns => AuthResult, {nullable: true})
   async userSignIn(
     @Arg("username", {nullable: false}) username: string,
     @Arg("password", {nullable: false}) password: string

@@ -1,10 +1,14 @@
-import {Resolver, Mutation, Arg, Query, ID, FieldResolver, Root} from "type-graphql";
+import {Resolver, Mutation, Arg, Query, ID, FieldResolver, Root, Ctx} from "type-graphql";
 import { Item, ItemModel } from "../entities/Item";
 import { List} from "../entities/List";
 import { User} from "../entities/User";
 import { ItemInput, ItemUpdateInput, ItemFilter} from "./types/item-input";
 import {Ref} from "../types";
 import { Tag } from "../entities/Tag";
+
+interface Context {
+  userId: string
+}
 @Resolver(of => Item)
 export class ItemResolver {
   @Query(_returns => Item, {nullable: false})
@@ -16,13 +20,11 @@ export class ItemResolver {
   async returnMultipleItem(
     @Arg("filter") filter: ItemFilter,
     @Arg("after", {nullable: true}) after?: Date,
-    @Arg("before", {nullable: true}) before? : Date
+    @Arg("before", {nullable: true}) before? : Date,
+    @Ctx() ctx?: any
   ) {
     let dbFilter : any;
     dbFilter = {...filter};
-    console.log(dbFilter);
-    console.log('after',after);
-    console.log('before',before);
     if(after) {
       dbFilter.dueDate = {};
       dbFilter.dueDate.$gte = after
@@ -30,7 +32,6 @@ export class ItemResolver {
     if(before) {
       dbFilter.dueDate.$lte = before
     }
-    console.log(dbFilter);
     const items = await ItemModel.find(dbFilter)
     return items
   }
