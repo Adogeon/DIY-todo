@@ -37,6 +37,7 @@ export class ItemResolver {
     return items
   }
 
+  @Authorized()
   @Mutation(() => Item)
   async createItem(
     @Arg("item") {text, isDone, tags, priority, dueDate, project}: ItemInput,
