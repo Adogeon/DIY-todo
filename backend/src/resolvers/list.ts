@@ -17,7 +17,7 @@ export class ListResolver {
     @Ctx() ctx? :any,
   ): Promise<List> {
     const list = await(await ListModel.create({title, colorCode})).save();
-    const userDoc = await UserModel.findById(ctx.user.id);
+    const userDoc = await UserModel.findById(ctx.user.userId);
     userDoc.todos.push(list.id);
     await userDoc.save(); 
     return list;

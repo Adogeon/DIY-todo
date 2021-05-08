@@ -29,7 +29,6 @@ input ItemFilter {
 }
 
 input ItemInput {
-  belongTo: ID!
   dueDate: Timestamp
   isDone: Boolean
   priority: String

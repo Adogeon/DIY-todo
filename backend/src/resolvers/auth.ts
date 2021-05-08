@@ -7,13 +7,13 @@ import bcrypt from 'bcrypt';
 const generateToken = (id: string) => {
   return jsonwebtoken.sign({
     userId: id
-  }, 'TypeGraphQL', {expiresIn: '2m'})
+  }, 'TypeGraphQL', {expiresIn: '1d'})
 }
 
 const generateRefreshToken = (id: string) => {
   return jsonwebtoken.sign({
     userId: id
-  }, 'RefreshSECRET', {expiresIn: '7d'})
+  }, 'RefreshSECRET', {expiresIn: '30d'})
 }
 @Resolver(of => AuthResult) 
 export class AuthResolver {
@@ -44,12 +44,11 @@ export class AuthResolver {
   ) {
     try {
       const decoded: any = await jsonwebtoken.verify(token, 'RefreshSECRET')
-      console.log(decoded);
       const user = await UserModel.findById(decoded.userId);
       if(user) {
         return {
           token: generateToken(user.id),
-          refresh: generateToken(user.id)
+          refresh: generateRefreshToken(user.id)
         }
       } else {
         throw new Error('Invalid token')

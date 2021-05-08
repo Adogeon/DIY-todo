@@ -30,7 +30,7 @@ const main = async () => {
 
   const app = express();
 
-  app.use('/graphql', jwt({
+  app.use('/', jwt({
     secret: "TypeGraphQL", 
     algorithms:['HS256'],
     credentialsRequired: false,
@@ -45,13 +45,14 @@ const main = async () => {
   }))
 
   app.use(function (err, req, res, next) {
+    console.log(err.inner.name)
     if(err.inner.name === 'TokenExpiredError') {
       req.user = {error: err.inner.name}
     } 
-    return next()
+    next()
   });
 
-  app.use('/graphql', graphqlHTTP({
+  app.use('/', graphqlHTTP({
     schema: schema,
     graphiql: true,
     customFormatErrorFn: error => ({
@@ -62,7 +63,7 @@ const main = async () => {
   }))
   
   app.listen({port: 3000}, () => {
-    console.log(`Server ready and listening at ==> http://localhost:3000/graphql`)
+    console.log(`Server ready and listening at ==> http://localhost:3000/`)
   });
 }
 

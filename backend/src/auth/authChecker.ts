@@ -9,5 +9,6 @@ interface Context {
 }
 
 export const authChecker: AuthChecker<Context> = ({context}) => {
-    return context.user!== undefined; 
+  if(context.user)
+    return true
 }

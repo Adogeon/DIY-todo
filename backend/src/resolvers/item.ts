@@ -25,6 +25,12 @@ export class ItemResolver {
     @Ctx() ctx?: any
   ) {
     let dbFilter : any;
+    if(!ctx.user.userId) {
+      throw new Error("Missing User")
+    }
+    if(ctx.user.error) {
+      throw new Error(ctx.user.error)
+    }
     dbFilter = {belongTo: ctx.user.userId, ...filter};
     if(after) {
       dbFilter.dueDate = {};
@@ -43,6 +49,9 @@ export class ItemResolver {
     @Arg("item") {text, isDone, tags, priority, dueDate, project}: ItemInput,
     @Ctx() ctx? : any
   ) {
+    if(!ctx.user.userId) {
+      throw new Error("Missing User")
+    }
     const item = await (await ItemModel.create({
       text,
       isDone,
