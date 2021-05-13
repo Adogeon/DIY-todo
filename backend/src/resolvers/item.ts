@@ -87,7 +87,7 @@ export class ItemResolver {
     try {
       const result = await ItemModel.updateMany(
         { _id: { $in: idQueue} },
-        { $set: {itemInput} }
+        { $set: itemInput }
       )
       if(result) return true
     } catch(error) {
