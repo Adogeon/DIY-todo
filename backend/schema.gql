@@ -64,6 +64,7 @@ type Mutation {
   refreshLogin(token: String!): AuthResult!
   updateItem(id: ID!, item: ItemUpdateInput!): Item!
   updateList(colorCode: String!, id: ID!, title: String!): List!
+  updateManyItem(idQueue: [ID!]!, item: ItemUpdateInput!): Boolean!
   updateTag(colorCode: String!, id: ID!, text: String!): Tag!
   updateUser(data: UserInput!): User!
   userSignIn(password: String!, username: String!): AuthResult

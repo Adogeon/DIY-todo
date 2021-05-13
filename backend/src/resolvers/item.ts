@@ -1,4 +1,4 @@
-import {Resolver, Mutation, Arg, Query, ID, FieldResolver, Root, Ctx, Authorized} from "type-graphql";
+import {Resolver, Mutation, Arg, Query, ID, FieldResolver, Root, Ctx, Authorized, Args} from "type-graphql";
 import { Item, ItemModel } from "../entities/Item";
 import { List} from "../entities/List";
 import { User} from "../entities/User";
@@ -77,6 +77,24 @@ export class ItemResolver {
     const item = await doc.save();
     return item;
   }
+
+  @Authorized()
+  @Mutation(() => Boolean)
+  async updateManyItem(
+    @Arg('idQueue', type => [ID]) idQueue: string[],
+    @Arg('item') itemInput: ItemUpdateInput
+  ) {
+    try {
+      const result = await ItemModel.updateMany(
+        { _id: { $in: idQueue} },
+        { $set: {itemInput} }
+      )
+      if(result) return true
+    } catch(error) {
+      throw new Error(error.message)
+    }
+  }
+  
   
   @Authorized()
   @Mutation(() => Boolean)
